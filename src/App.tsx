@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import api from './api';
+import forecastService from './services/ForecastService';
+import AddressField from './components/AddressField/AddressField';
 
 const App = () => {
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState({});
   const testAddress = {
     street: '2202 N Kedzie',
     city: 'Chicago',
@@ -13,15 +14,13 @@ const App = () => {
     getResult();
   }, []);
   const getResult = async () => {
-    const result = await api.getCoords(testAddress);
-    console.log(result.result.addressMatches[0].coordinates);
-    const forecast = await api.getForecast(
-      result.result.addressMatches[0].coordinates,
-    );
-    setAddress(result);
-    console.log({ forecast });
+    forecastService.getWeeklyForecast(testAddress);
   };
-  return <div>test</div>;
+  return (
+    <div>
+      <AddressField />
+    </div>
+  );
 };
 
 export default App;

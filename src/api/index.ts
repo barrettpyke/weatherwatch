@@ -1,27 +1,71 @@
+import { Address, Coords, Location, WeeklyForecast } from '../types';
+
+const weatherConfig = {
+  headers: {
+    'User-Agent': 'weatherwatch',
+  },
+};
+
 class api {
-  async getCoords(address: {
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
-  }) {
-    const results = await fetch(
+  async getCoords(address: Address): Promise<Coords> {
+    const coordsResponse = await fetch(
       `/geocoder/locations/address?street=${address.street}&city=${address.city}&state=${address.state}&zip=${address.zip}&benchmark=Public_AR_Census2020&format=json`,
     );
 
-    return results.json();
+    const json = await this.handleResponse(coordsResponse);
+
+    const coords: Coords = json.result.addressMatches[0].coordinates;
+
+    return coords;
   }
 
-  async getForecast(coords: { y: string; x: string }) {
-    const results = await fetch(
+  async getLocation(coords: Coords): Promise<Location> {
+    const locationResponse = await fetch(
       `https://api.weather.gov/points/${coords.y},${coords.x}`,
+      weatherConfig,
     );
 
-    const json = await results.json();
+    const json = await this.handleResponse(locationResponse);
 
-    const forecast = await fetch(json.properties.forecast);
+    const properties = json.properties;
 
-    return forecast.json();
+    const location: Location = {
+      cwa: properties.cwa,
+      gridX: properties.gridX,
+      gridY: properties.gridY,
+    };
+
+    return location;
+  }
+
+  async getWeeklyForecast(location: Location): Promise<WeeklyForecast> {
+    const weeklyForecastResponse = await fetch(
+      `https://api.weather.gov/gridpoints/${location.cwa}/${location.gridX},${location.gridY}/forecast`,
+      weatherConfig,
+    );
+
+    const json = await this.handleResponse(weeklyForecastResponse);
+
+    const weeklyForecast: WeeklyForecast = json.properties.periods
+      .filter((period: any) => {
+        return period.isDaytime === true;
+      })
+      .map((period: any) => {
+        return {
+          name: period.name,
+          temp: period.temperature,
+          tempUnit: period.temperatureUnit,
+          humidity: period.relativeHumidity.value,
+          description: period.shortForecast,
+        };
+      });
+
+    return weeklyForecast;
+  }
+
+  async handleResponse(response: Response): Promise<any> {
+    const result = await response.json();
+    return result;
   }
 }
 
