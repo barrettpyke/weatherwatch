@@ -19,7 +19,6 @@ const App = () => {
       result.result.addressMatches[0].coordinates,
     );
     setAddress(result);
-    console.log({ result });
     console.log({ forecast });
   };
   return <div>test</div>;
