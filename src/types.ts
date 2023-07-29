@@ -2,7 +2,6 @@ export interface Address {
   street: string;
   city: string;
   state: string;
-  zip: string;
 }
 
 export interface Coords {
@@ -23,5 +22,3 @@ export interface Forecast {
   humidity: string;
   description: string;
 }
-
-export type WeeklyForecast = Forecast[];
