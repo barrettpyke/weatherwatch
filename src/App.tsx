@@ -1,24 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import forecastService from './services/ForecastService';
 import AddressField from './components/AddressField/AddressField';
+import { Address, Forecast } from './types';
+import './App.css';
+import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 
 const App = () => {
-  const [address, setAddress] = useState({});
-  const testAddress = {
-    street: '2202 N Kedzie',
-    city: 'Chicago',
-    state: 'IL',
-    zip: '60647',
-  };
+  const [value, setValue] = useState<Address>();
+  const [weeklyForecast, setWeeklyForecast] = useState<Forecast[]>([]);
+
   useEffect(() => {
     getResult();
-  }, []);
-  const getResult = async () => {
-    forecastService.getWeeklyForecast(testAddress);
+  }, [value]);
+
+  const onValueChange = (value: any) => {
+    if (value) {
+      const address = forecastService.formatAddress(value.label);
+      setValue(address);
+    }
   };
+
+  console.log({ value });
+  const getResult = async () => {
+    if (value) {
+      const weeklyForecastResult = await forecastService.getWeeklyForecast(value);
+      setWeeklyForecast(weeklyForecastResult);
+      setValue(undefined);
+    }
+  };
+
   return (
-    <div>
-      <AddressField />
+    <div className="container">
+      <AddressField value={value} onChange={onValueChange} />
+      <WeeklyForecast weeklyForecast={weeklyForecast} />
     </div>
   );
 };

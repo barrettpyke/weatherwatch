@@ -1,4 +1,4 @@
-import { Address, Coords, Location, WeeklyForecast } from '../types';
+import { Address, Coords, Forecast, Location } from '../types';
 
 const weatherConfig = {
   headers: {
@@ -9,7 +9,7 @@ const weatherConfig = {
 class api {
   async getCoords(address: Address): Promise<Coords> {
     const coordsResponse = await fetch(
-      `/geocoder/locations/address?street=${address.street}&city=${address.city}&state=${address.state}&zip=${address.zip}&benchmark=Public_AR_Census2020&format=json`,
+      `/geocoder/locations/address?street=${address.street}&city=${address.city}&state=${address.state}&benchmark=Public_AR_Census2020&format=json`,
     );
 
     const json = await this.handleResponse(coordsResponse);
@@ -38,7 +38,7 @@ class api {
     return location;
   }
 
-  async getWeeklyForecast(location: Location): Promise<WeeklyForecast> {
+  async getWeeklyForecast(location: Location): Promise<Forecast[]> {
     const weeklyForecastResponse = await fetch(
       `https://api.weather.gov/gridpoints/${location.cwa}/${location.gridX},${location.gridY}/forecast`,
       weatherConfig,
@@ -46,7 +46,7 @@ class api {
 
     const json = await this.handleResponse(weeklyForecastResponse);
 
-    const weeklyForecast: WeeklyForecast = json.properties.periods
+    const weeklyForecast: Forecast[] = json.properties.periods
       .filter((period: any) => {
         return period.isDaytime === true;
       })
