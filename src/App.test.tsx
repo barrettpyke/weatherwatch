@@ -17,15 +17,15 @@ describe('App tests', () => {
   });
 
   // TODO: fix these tests
-  describe.skip('when a location is selected', () => {
-    beforeEach(() => {
-      searchAddress();
-    });
+  describe('when a location is selected', () => {
+    // beforeEach(() => {
+    //   searchAddress();
+    // });
     it('should display a progress indicator', () => {
       verifyProgressIndicator();
     });
-    it('should display a weekly forecast when loading data succeeds', () => {});
-    it('should display an error when loading data fails', () => {});
+    // it('should display a weekly forecast when loading data succeeds', () => {});
+    // it('should display an error when loading data fails', () => {});
   });
 });
 

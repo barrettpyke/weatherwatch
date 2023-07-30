@@ -1,13 +1,13 @@
 import { Address, Coords, Forecast, Location } from '../types';
 import constants from '../utils/globalConstants.json';
 
-const weatherConfig: RequestInit = {
+export const weatherConfig: RequestInit = {
   headers: {
     'User-Agent': 'weatherwatch',
   },
 };
 
-class api {
+export class Api {
   async getCoords(address: Address): Promise<Coords> {
     const anyAddressPartUndefined =
       address.city === undefined ||
@@ -41,6 +41,8 @@ class api {
 
     const json = await this.handleResponse(locationResponse);
 
+    console.log({ json });
+
     const properties = json.properties;
 
     const location: Location = {
@@ -59,6 +61,8 @@ class api {
     );
 
     const json = await this.handleResponse(weeklyForecastResponse);
+
+    console.log({ json });
 
     // TODO: do i need to type this map return value to Forecast?
     const weeklyForecast: Forecast[] = json.properties.periods
@@ -93,4 +97,4 @@ class api {
   }
 }
 
-export default new api();
+export default new Api();

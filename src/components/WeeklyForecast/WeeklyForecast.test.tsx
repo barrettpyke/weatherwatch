@@ -1,34 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Forecast } from '../../types';
+import { weeklyForecastMock } from '../../utils/testMocks';
 import WeeklyForecast, { WeeklyForecastProps } from './WeeklyForecast';
 import { verifyDailyForecast } from '../../utils/testUtils';
-
-const todayForecast: Forecast = {
-  date: 'Today',
-  temp: '97',
-  tempUnit: 'F',
-  humidity: '10',
-  description: 'Sunny',
-};
-
-const mondayForecast: Forecast = {
-  date: 'Monday',
-  temp: '84',
-  tempUnit: 'F',
-  humidity: '20',
-  description: 'Thunderstorm',
-};
-
-const tuesdayForecast: Forecast = {
-  date: 'Tuesday',
-  temp: '45',
-  tempUnit: 'F',
-  humidity: '60',
-  description: 'Rainy',
-};
-
-const weeklyForecastMock: Forecast[] = [todayForecast, mondayForecast, tuesdayForecast];
 
 const setup = () => {
   const props: WeeklyForecastProps = {
