@@ -1,6 +1,7 @@
+import React from 'react';
 import { Cloud, Thunderstorm, WaterDrop, WbSunny } from '@mui/icons-material';
 
-class IconService {
+export class IconService {
   getIcon(description: string) {
     const descriptionLower = description.toLowerCase();
     if (descriptionLower.includes('sunny')) {
@@ -15,6 +16,4 @@ class IconService {
   }
 }
 
-const iconService = new IconService();
-
-export default iconService;
+export const iconService = new IconService();

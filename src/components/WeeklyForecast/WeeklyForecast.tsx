@@ -1,23 +1,31 @@
 import React from 'react';
+import DailyForecast from '../DailyForecast';
+import { Button, Card, Typography } from '@mui/material';
 import { Forecast } from '../../types';
-import DailyForecast from '../DailyForecast/DailyForecast';
-import { Card, Typography } from '@mui/material';
 import './WeeklyForecast.css';
 
-interface WeeklyForecastProps {
+export interface WeeklyForecastProps {
   weeklyForecast: Forecast[];
   city: string;
   state: string;
+  onRemoveClick: any;
 }
 
-const WeeklyForecast = (props: WeeklyForecastProps) => {
-  const { weeklyForecast, city, state } = props;
+const WeeklyForecast = ({
+  weeklyForecast,
+  city,
+  state,
+  onRemoveClick,
+}: WeeklyForecastProps) => {
   if (weeklyForecast.length > 0) {
     return (
       <div>
-        <Typography className="weekly-forecast-header" variant="h5" gutterBottom>
-          {city}, {state}
-        </Typography>
+        <div className="weekly-forecast-header">
+          <Typography variant="h5" gutterBottom>
+            {city}, {state}
+          </Typography>
+          <Button onClick={onRemoveClick}>Remove</Button>
+        </div>
         <Card variant="outlined">
           <div className="weekly-forecast">
             {weeklyForecast.map((forecast, index) => {
@@ -28,7 +36,7 @@ const WeeklyForecast = (props: WeeklyForecastProps) => {
       </div>
     );
   } else {
-    return <></>;
+    return null;
   }
 };
 

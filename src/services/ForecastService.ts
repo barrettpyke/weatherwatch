@@ -1,7 +1,7 @@
 import { Address, Coords, Forecast, Location } from '../types';
 import api from '../api';
 
-class ForecastService {
+export class ForecastService {
   async getWeeklyForecast(address: Address): Promise<Forecast[]> {
     const coords: Coords = await api.getCoords(address);
 
@@ -19,7 +19,9 @@ class ForecastService {
 
     const resultArr = result.split(', ');
 
-    if (resultArr.length === 4) {
+    const resultContainsAllParts = resultArr.length === 4;
+
+    if (resultContainsAllParts) {
       street = resultArr[0];
       city = resultArr[1];
       state = resultArr[2];
@@ -29,6 +31,4 @@ class ForecastService {
   }
 }
 
-const forecastService = new ForecastService();
-
-export default forecastService;
+export const forecastService = new ForecastService();

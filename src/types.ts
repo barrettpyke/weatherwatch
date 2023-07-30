@@ -16,7 +16,7 @@ export interface Location {
 }
 
 export interface Forecast {
-  name: string;
+  date: string;
   temp: string;
   tempUnit: string;
   humidity: string;

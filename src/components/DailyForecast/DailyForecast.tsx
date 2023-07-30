@@ -1,17 +1,15 @@
 import React from 'react';
-import { Forecast } from '../../types';
-import iconService from '../../services/IconService';
 import Typography from '@mui/material/Typography';
+import { iconService } from '../../services';
+import { Forecast } from '../../types';
 import './DailyForecast.css';
 
-interface DailyForecastProps {
+export interface DailyForecastProps {
   forecast: Forecast;
 }
 
-const DailyForecast = (props: DailyForecastProps) => {
-  const { forecast } = props;
-
-  const forecastName = forecast.name === 'This Afternoon' ? 'Today' : forecast.name;
+const DailyForecast = ({ forecast }: DailyForecastProps) => {
+  const forecastName = forecast.date === 'This Afternoon' ? 'Today' : forecast.date;
   const icon = iconService.getIcon(forecast.description);
 
   return (
