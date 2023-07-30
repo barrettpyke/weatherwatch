@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import forecastService from './services/ForecastService';
 import AddressField from './components/AddressField/AddressField';
-import { Address, Forecast, ForecastLocation } from './types';
+import { Address, ForecastLocation } from './types';
 import './App.css';
 import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import '@fontsource/roboto/300.css';
