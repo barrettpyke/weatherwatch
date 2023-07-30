@@ -1,7 +1,7 @@
 export interface Address {
-  street: string;
-  city: string;
-  state: string;
+  street?: string;
+  city?: string;
+  state?: string;
 }
 
 export interface Coords {
@@ -21,4 +21,10 @@ export interface Forecast {
   tempUnit: string;
   humidity: string;
   description: string;
+}
+
+export interface ForecastLocation {
+  city: string;
+  state: string;
+  weeklyForecast: Forecast[];
 }

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import './AddressField.css';
 
-// TODO: fix prop types
 interface AddressProps {
   value: any;
   onChange: any;
@@ -24,6 +23,7 @@ const AddressField = (props: AddressProps) => {
           onChange: props.onChange,
           isClearable: true,
           isSearchable: true,
+          placeholder: 'Enter a US address...',
         }}
       />
     </div>

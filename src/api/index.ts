@@ -1,6 +1,7 @@
 import { Address, Coords, Forecast, Location } from '../types';
+import constants from '../globalConstants.json';
 
-const weatherConfig = {
+const weatherConfig: RequestInit = {
   headers: {
     'User-Agent': 'weatherwatch',
   },
@@ -8,19 +9,32 @@ const weatherConfig = {
 
 class api {
   async getCoords(address: Address): Promise<Coords> {
-    const coordsResponse = await fetch(
-      `/geocoder/locations/address?street=${address.street}&city=${address.city}&state=${address.state}&benchmark=Public_AR_Census2020&format=json`,
-    );
+    const anyAddressPartUndefined =
+      address.city === undefined ||
+      address.state === undefined ||
+      address.street === undefined;
 
-    const json = await this.handleResponse(coordsResponse);
+    if (!anyAddressPartUndefined) {
+      const coordsResponse = await this.getRequest(
+        `/geocoder/locations/address?street=${address.street}&city=${address.city}&state=${address.state}&benchmark=Public_AR_Census2020&format=json`,
+      );
 
-    const coords: Coords = json.result.addressMatches[0].coordinates;
+      const json = await this.handleResponse(coordsResponse);
 
-    return coords;
+      const addressMatches = json.result.addressMatches;
+
+      if (addressMatches.length > 0) {
+        return addressMatches[0].coordinates;
+      } else {
+        throw Error(constants.errors.noCoordsFound);
+      }
+    } else {
+      throw Error(constants.errors.enterFullAddress);
+    }
   }
 
   async getLocation(coords: Coords): Promise<Location> {
-    const locationResponse = await fetch(
+    const locationResponse = await this.getRequest(
       `https://api.weather.gov/points/${coords.y},${coords.x}`,
       weatherConfig,
     );
@@ -39,7 +53,7 @@ class api {
   }
 
   async getWeeklyForecast(location: Location): Promise<Forecast[]> {
-    const weeklyForecastResponse = await fetch(
+    const weeklyForecastResponse = await this.getRequest(
       `https://api.weather.gov/gridpoints/${location.cwa}/${location.gridX},${location.gridY}/forecast`,
       weatherConfig,
     );
@@ -66,6 +80,19 @@ class api {
   async handleResponse(response: Response): Promise<any> {
     const result = await response.json();
     return result;
+  }
+
+  async getRequest(url: string, config?: RequestInit): Promise<Response> {
+    try {
+      const response = await fetch(url, config);
+      if (response.ok) {
+        return response;
+      } else {
+        throw Error(constants.errors.fetch);
+      }
+    } catch (error) {
+      throw Error(constants.errors.fetch);
+    }
   }
 }
 
