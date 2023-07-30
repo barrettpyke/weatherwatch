@@ -1,5 +1,5 @@
 import { Address, Coords, Forecast, Location } from '../types';
-import constants from '../globalConstants.json';
+import constants from '../utils/globalConstants.json';
 
 const weatherConfig: RequestInit = {
   headers: {
@@ -60,13 +60,14 @@ class api {
 
     const json = await this.handleResponse(weeklyForecastResponse);
 
+    // TODO: do i need to type this map return value to Forecast?
     const weeklyForecast: Forecast[] = json.properties.periods
       .filter((period: any) => {
         return period.isDaytime === true;
       })
       .map((period: any) => {
         return {
-          name: period.name,
+          date: period.name,
           temp: period.temperature,
           tempUnit: period.temperatureUnit,
           humidity: period.relativeHumidity.value,
@@ -83,14 +84,10 @@ class api {
   }
 
   async getRequest(url: string, config?: RequestInit): Promise<Response> {
-    try {
-      const response = await fetch(url, config);
-      if (response.ok) {
-        return response;
-      } else {
-        throw Error(constants.errors.fetch);
-      }
-    } catch (error) {
+    const response = await fetch(url, config);
+    if (response.ok) {
+      return response;
+    } else {
       throw Error(constants.errors.fetch);
     }
   }

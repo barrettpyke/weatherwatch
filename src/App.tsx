@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import forecastService from './services/ForecastService';
-import AddressField from './components/AddressField/AddressField';
+import AddressField from './components/AddressField';
+import WeeklyForecast from './components/WeeklyForecast';
+import { Alert, CircularProgress } from '@mui/material';
+import { forecastService } from './services';
 import { Address, ForecastLocation } from './types';
 import './App.css';
-import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Alert, CircularProgress } from '@mui/material';
 
 const App = () => {
   const [value, setValue] = useState<Address>();
@@ -21,8 +21,8 @@ const App = () => {
   }, [value]);
 
   const onValueChange = (value: any) => {
-    setLoading(true);
     if (value) {
+      setLoading(true);
       const address = forecastService.formatAddress(value.label);
       setValue(address);
       setError('');
@@ -32,6 +32,12 @@ const App = () => {
   const onComplete = () => {
     setLoading(false);
     setValue(undefined);
+  };
+
+  const removeForecast = (index: number) => {
+    const forecastLocationsCopy = forecastLocations.slice(0);
+    forecastLocationsCopy.splice(index, 1);
+    setForecastLocations(forecastLocationsCopy);
   };
 
   const getResult = async () => {
@@ -78,6 +84,7 @@ const App = () => {
                 weeklyForecast={forecastLocation.weeklyForecast}
                 city={forecastLocation.city}
                 state={forecastLocation.state}
+                onRemoveClick={() => removeForecast(index)}
                 key={index}
               />
             );

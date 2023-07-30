@@ -7,7 +7,7 @@ interface AddressProps {
   onChange: any;
 }
 
-const AddressField = (props: AddressProps) => {
+const AddressField = ({ value, onChange }: AddressProps) => {
   return (
     <div className="autocomplete">
       <GooglePlacesAutocomplete
@@ -19,8 +19,8 @@ const AddressField = (props: AddressProps) => {
         }}
         onLoadFailed={(error) => console.error(error)}
         selectProps={{
-          value: props.value,
-          onChange: props.onChange,
+          value: value,
+          onChange: onChange,
           isClearable: true,
           isSearchable: true,
           placeholder: 'Enter a US address...',

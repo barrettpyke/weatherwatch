@@ -5,7 +5,9 @@
 }
 
 .weekly-forecast-header {
-  margin-left: 1rem !important;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem 0 1rem !important;
 }
 
 .forecast-details {
