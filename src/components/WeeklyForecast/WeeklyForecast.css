@@ -1,0 +1,13 @@
+.weekly-forecast {
+  display: flex;
+  gap: 3rem;
+  padding: 1rem;
+}
+
+.weekly-forecast-header {
+  margin-left: 1rem !important;
+}
+
+.forecast-details {
+  margin-top: 1rem;
+}

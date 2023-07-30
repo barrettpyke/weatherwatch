@@ -1,0 +1,7 @@
+{
+  "errors": {
+    "fetch": "There was an error getting your forecast, please try again.",
+    "noCoordsFound": "No coordinates were found for this address.",
+    "enterFullAddress": "Please enter a full address with street, city, and state."
+  }
+}
