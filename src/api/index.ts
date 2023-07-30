@@ -41,8 +41,6 @@ export class Api {
 
     const json = await this.handleResponse(locationResponse);
 
-    console.log({ json });
-
     const properties = json.properties;
 
     const location: Location = {
@@ -62,9 +60,6 @@ export class Api {
 
     const json = await this.handleResponse(weeklyForecastResponse);
 
-    console.log({ json });
-
-    // TODO: do i need to type this map return value to Forecast?
     const weeklyForecast: Forecast[] = json.properties.periods
       .filter((period: any) => {
         return period.isDaytime === true;
